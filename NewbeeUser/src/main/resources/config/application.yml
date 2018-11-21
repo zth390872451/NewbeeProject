@@ -17,11 +17,6 @@ spring:
     username: hrms
     password: 123456
 
-logging:
-  level:
-    root: info
-    com.newbee.net.mapper: debug
-  file: /data/logs/newbee/newbee.log
 
 mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
