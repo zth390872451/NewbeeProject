@@ -45,7 +45,7 @@
         <file>${path}/newbee_user_info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 每天一归档 -->
-            <fileNamePattern>${path}/logback_info.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <fileNamePattern>${path}/newbee_user_info.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -67,7 +67,7 @@
         <file>${path}/newbee_user_warn.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 每天一归档 -->
-            <fileNamePattern>${path}/logback_warn.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <fileNamePattern>${path}/newbee_user_warn.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -90,7 +90,7 @@
         <file>${path}/newbee_user_error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 每天一归档 -->
-            <fileNamePattern>${path}/logback_error.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <fileNamePattern>${path}/newbee_user_error.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
