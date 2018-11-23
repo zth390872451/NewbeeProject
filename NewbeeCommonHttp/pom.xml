@@ -18,6 +18,12 @@
             <groupId>newbee-project</groupId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <artifactId>newbee-service</artifactId>
+            <groupId>newbee-project</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

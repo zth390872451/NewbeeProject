@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newbee.net.mapper.UserMapper">
+
+    <select id="selectLoginUserDTOByUserName" resultType="com.newbee.net.dto.LoginUserDTO">
+		SELECT
+			u.user_name,
+			u.`password`,
+			u.secret,
+			GROUP_CONCAT(DISTINCT r.role_name) AS  role,
+			GROUP_CONCAT(DISTINCT p.permission_name) AS permission
+		FROM
+			USER u
+		LEFT JOIN user_role ur ON u.user_no = ur.user_no
+		LEFT JOIN role r ON ur.role_no = r.role_no
+		LEFT JOIN role_permission rp ON ur.role_no = rp.role_no
+		LEFT JOIN permission p ON rp.permission_no = p.permission_no
+		WHERE	user_name = #{userName}
+		GROUP BY user_name
+    </select>
+</mapper>

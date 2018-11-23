@@ -9,7 +9,7 @@ package mybatis.plus.generator;
 public class GeneratorCodeConfig {
 	
 	public static void main(String[] args) {
-		String[] tables = new String[] { "user_role_rel" };
+		String[] tables = new String[] { "role_permission" };
 		GeneratorCodeUtil.generateByTables("zheng.th", "com.newbee.net", tables);
 	}
 }

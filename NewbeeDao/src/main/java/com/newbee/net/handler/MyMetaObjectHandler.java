@@ -25,8 +25,8 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
         System.out.println("*************************");
         System.out.println("insert fill");
         System.out.println("*************************");
-        metaObject.setValue("createDate", new Date());
-        metaObject.setValue("modifyDate", new Date());
+        metaObject.setValue("createTime", new Date());
+        metaObject.setValue("updateTime", new Date());
     }
 
     @Override
@@ -36,6 +36,6 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
         System.out.println("update fill");
         System.out.println("*************************");
         //mybatis-plus版本2.0.9+
-        metaObject.setValue("modifyDate", new Date());
+        metaObject.setValue("updateTime", new Date());
     }
 }
