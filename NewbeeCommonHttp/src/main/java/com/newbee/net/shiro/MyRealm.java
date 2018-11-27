@@ -1,9 +1,9 @@
 package com.newbee.net.shiro;
 
-import com.newbee.net.dto.LoginUserDTO;
+import com.newbee.net.dto.UserRoleInfoDTO;
 import com.newbee.net.jwt.JwtToken;
-import com.newbee.net.service.IUserService;
 import com.newbee.net.jwt.JwtUtil;
+import com.newbee.net.service.IUserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
@@ -51,10 +51,10 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String username = JwtUtil.getUsername(principals.toString());
-        LoginUserDTO loginUserDTO = userService.getLoginUserDTOByUserName(username);
+        UserRoleInfoDTO userRoleInfoDTO = userService.getLoginUserDTOByUserName(username);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRole(loginUserDTO.getRole());
-        Set<String> permission = new HashSet<>(Arrays.asList(loginUserDTO.getPermission().split(",")));
+        simpleAuthorizationInfo.addRole(userRoleInfoDTO.getRole());
+        Set<String> permission = new HashSet<>(Arrays.asList(userRoleInfoDTO.getPermission().split(",")));
         simpleAuthorizationInfo.addStringPermissions(permission);
         return simpleAuthorizationInfo;
     }
@@ -70,14 +70,11 @@ public class MyRealm extends AuthorizingRealm {
         if (username == null) {
             throw new AuthenticationException("token invalid");
         }
-        LoginUserDTO loginUser = userService.getLoginUserDTOByUserName(username);
-        if (loginUser == null) {
+        UserRoleInfoDTO userRoleInfoDTO = userService.getLoginUserDTOByUserName(username);
+        if (userRoleInfoDTO == null) {
             throw new AuthenticationException("User didn't existed!");
         }
-        JwtUtil.verify(token, loginUser.getUserName(), loginUser.getSecret());
-      /*  if (!JwtUtil.verify(token, loginUser.getUserName(), loginUser.getSecret())) {
-            throw new AuthenticationException("Username or password error");
-        }*/
+        JwtUtil.verify(token, userRoleInfoDTO.getUserName(), userRoleInfoDTO.getSecret());
         return new SimpleAuthenticationInfo(token, token, "my_realm");
     }
 }
