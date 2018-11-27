@@ -1,7 +1,7 @@
 /*
 package com.newbee.net.jwt;
 
-import com.newbee.net.dto.LoginDTO;
+import com.newbee.net.dto.LoginUserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -28,7 +28,7 @@ public class JwtTokenFactory {
     // 过期时间5分钟
     private static final long EXPIRE_TIME = 5*60*1000;
 
-    public String createAccessJwtToken(LoginDTO userContext) {
+    public String createAccessJwtToken(LoginUserDTO userContext) {
         if (StringUtils.isBlank(userContext.getUserName())){
             throw new IllegalArgumentException("Cannot create JWT Token without username");
         }

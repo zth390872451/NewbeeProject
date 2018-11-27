@@ -17,11 +17,6 @@ spring:
     username: hrms
     password: 123456
 
-logging:
-  level:
-    root: info
-    com.newbee.net.mapper: debug
-  file: /data/logs/newbee/newbee.log
 
 mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
@@ -49,7 +44,7 @@ mybatis-plus:
     logic-not-delete-value: 0
     sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     #自定义填充策略接口实现
-    meta-object-handler: com.newbee.net.handler.MyMetaObjectHandler
+#    meta-object-handler: com.newbee.net.handler.MyMetaObjectHandler
   configuration:
     #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
     map-underscore-to-camel-case: true
