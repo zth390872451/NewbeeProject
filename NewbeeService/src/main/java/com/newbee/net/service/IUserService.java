@@ -1,7 +1,7 @@
 package com.newbee.net.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.newbee.net.dto.LoginUserDTO;
+import com.newbee.net.dto.UserRoleInfoDTO;
 import com.newbee.net.entity.User;
 
 /**
@@ -13,7 +13,11 @@ import com.newbee.net.entity.User;
  * @since 2018-11-22
  */
 public interface IUserService extends IService<User> {
-
-    LoginUserDTO getLoginUserDTOByUserName(String userName);
+    /**
+     * 获取用户身份权限信息
+     * @param userName 登录用户名
+     * @return 用户身份信息
+     */
+    UserRoleInfoDTO getLoginUserDTOByUserName(String userName);
 
 }
