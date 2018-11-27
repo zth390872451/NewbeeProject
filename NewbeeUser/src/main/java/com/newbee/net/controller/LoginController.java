@@ -1,14 +1,17 @@
 package com.newbee.net.controller;
 
-import com.newbee.net.dto.LoginUserDTO;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.newbee.net.dto.LoginDTO;
+import com.newbee.net.dto.UserPasswordDTO;
+import com.newbee.net.dto.UserRoleInfoDTO;
+import com.newbee.net.entity.User;
+import com.newbee.net.jwt.JwtUtil;
 import com.newbee.net.resp.CustomResponse;
 import com.newbee.net.service.IUserService;
-import com.newbee.net.jwt.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.SecurityUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,24 +23,29 @@ import static com.newbee.net.resp.CustomResponseBuilder.success;
  * @Author: zheng.th
  * @Date: 2018/11/22 10:35
  */
-@Api(tags = "swagger2-测试")
+@Api(tags = "用户")
 @RestController
-@RequestMapping("/user-info")
+@RequestMapping("/user")
 public class LoginController {
 
     @Autowired
     private IUserService userService;
 
 
-    @ApiOperation(value = "登录获取JwtToken", notes = "登录")
+    @ApiOperation(value = "登录获取Token", notes = "SSO登录,将原有Token失效")
     @PostMapping("/login")
     @ResponseBody
-    public CustomResponse login(@RequestBody LoginUserDTO loginUserDTO) {
-        LoginUserDTO loginUser = userService.getLoginUserDTOByUserName(loginUserDTO.getUserName());
-        Assert.notNull(loginUser, "用户名不存在!");
-        if (loginUser.getPassword().equals(loginUserDTO.getPassword())) {
-            String token = JwtUtil.sign(loginUser.getUserName(), loginUser.getSecret());
-            Assert.notNull(token, "JwtToken生成失败，请重试!");
+    public CustomResponse login(@RequestBody LoginDTO loginUserDTO) {
+        UserRoleInfoDTO userPasswordDTO = userService.getLoginUserDTOByUserName(loginUserDTO.getUserName());
+        Assert.notNull(userPasswordDTO, "用户名不存在!");
+        if (userPasswordDTO.getPassword().equals(loginUserDTO.getPassword())) {
+            User user = new User();
+            user.setSecret(RandomStringUtils.randomAlphanumeric(6));
+            EntityWrapper<User> userEntityWrapper = new EntityWrapper<>();
+            userEntityWrapper.eq("user_name",userPasswordDTO.getUserName());
+            userService.update(user,userEntityWrapper);
+            String token = JwtUtil.sign(userPasswordDTO.getUserName(), user.getSecret());
+            Assert.notNull(token, "Token生成失败，请重试!");
             return success(token);
         } else {
             return fail("密码错误,请重新输入!");
@@ -45,18 +53,24 @@ public class LoginController {
     }
 
 
-
-    @GetMapping("/article")
-    @ApiOperation(value = "article", notes = "")
+    @PostMapping("/update/password")
+    @ApiOperation(value = "修改密码", notes = "修改密码和token密钥")
     @ResponseBody
-    public CustomResponse article() {
-        Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()) {
-            return success("you has login!");
-        }else {
-            return success("you are guest!");
+    public CustomResponse register(@RequestBody UserPasswordDTO userPasswordDTO) {
+        Assert.notNull(userPasswordDTO.getNewPassword(),"新密码不能为空！");
+        UserRoleInfoDTO loginUser = userService.getLoginUserDTOByUserName(userPasswordDTO.getUserName());
+        Assert.notNull(loginUser, "用户名不存在!");
+        if (loginUser.getPassword().equals(userPasswordDTO.getPassword())) {
+            User user = new User();
+            user.setPassword(userPasswordDTO.getNewPassword());
+            user.setSecret(RandomStringUtils.randomAlphanumeric(6));
+            EntityWrapper<User> userEntityWrapper = new EntityWrapper<>();
+            userEntityWrapper.eq("user_name",loginUser.getUserName());
+            userService.update(user,userEntityWrapper);
+            return success();
+        } else {
+            return fail("密码错误,请重新输入!");
         }
-
     }
 
     @ApiOperation(value = "add", notes = "")
