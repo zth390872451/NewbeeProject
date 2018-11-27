@@ -8,6 +8,7 @@ import com.newbee.net.entity.User;
 import com.newbee.net.jwt.JwtUtil;
 import com.newbee.net.resp.CustomResponse;
 import com.newbee.net.service.IUserService;
+import com.newbee.net.utils.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -15,6 +16,9 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.newbee.net.resp.CustomResponseBuilder.fail;
 import static com.newbee.net.resp.CustomResponseBuilder.success;
@@ -30,6 +34,9 @@ public class LoginController {
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private RedisUtil redisUtil;
+
 
 
     @ApiOperation(value = "登录获取Token", notes = "SSO登录,将原有Token失效")
@@ -74,7 +81,7 @@ public class LoginController {
     }
 
     @ApiOperation(value = "add", notes = "")
-    @GetMapping("/add")
+    @PostMapping("/add")
     @RequiresRoles("admin")
     @ResponseBody
     public CustomResponse add() {
@@ -83,7 +90,7 @@ public class LoginController {
 
     @ApiOperation(value = "delete", notes = "")
     @RequiresRoles("admin")
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     @ResponseBody
     public CustomResponse delete() {
         return success();
@@ -91,16 +98,24 @@ public class LoginController {
 
     @ApiOperation(value = "update", notes = "")
     @RequiresRoles("admin")
-    @GetMapping("/update")
+    @PostMapping("/update")
     @ResponseBody
     public CustomResponse update() {
         return success();
     }
     @ApiOperation(value = "get", notes = "")
     @RequiresRoles("common")
-    @GetMapping("/get")
+    @PostMapping("/get")
     @ResponseBody
     public CustomResponse get() {
+        return success();
+    }
+
+    @ApiOperation(value = "设置键值对", notes = "设置键值对")
+    @PostMapping("/setRedis")
+    @ResponseBody
+    public CustomResponse setRedis(@RequestParam String key, @RequestParam String value) {
+        redisUtil.sAdd(key,value);
         return success();
     }
 }
