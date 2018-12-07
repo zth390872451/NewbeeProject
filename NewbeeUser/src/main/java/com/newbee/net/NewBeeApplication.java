@@ -1,15 +1,16 @@
 package com.newbee.net;
 
 import com.newbee.net.constant.ApplicationConstant;
-import com.newbee.net.utils.ApplicationSupport;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.annotation.PostConstruct;
@@ -18,8 +19,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
-
 @SpringBootApplication
+@EnableTransactionManagement
+@Configuration
 public class NewBeeApplication {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(NewBeeApplication.class);

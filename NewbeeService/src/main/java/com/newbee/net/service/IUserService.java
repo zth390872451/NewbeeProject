@@ -20,4 +20,6 @@ public interface IUserService extends IService<User> {
      */
     UserRoleInfoDTO getLoginUserDTOByUserName(String userName);
 
+    void testTransaction()throws Exception;
+
 }

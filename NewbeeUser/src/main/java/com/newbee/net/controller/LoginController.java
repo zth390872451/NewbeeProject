@@ -114,8 +114,8 @@ public class LoginController {
     @ApiOperation(value = "设置键值对", notes = "设置键值对")
     @PostMapping("/setRedis")
     @ResponseBody
-    public CustomResponse setRedis(@RequestParam String key, @RequestParam String value) {
-        redisUtil.sAdd(key,value);
+    public CustomResponse setRedis(@RequestParam String key, @RequestParam String value) throws Exception {
+        userService.testTransaction();
         return success();
     }
 }
